@@ -20,7 +20,7 @@ jobs:
               username: ${{ secrets.FTP_USERNAME }}
               password: ${{ secrets.FTP_PASSWORD }}
               local-dir: ./README.md
-              server-dir: ./books/
+              server-dir: /books/
 
         - name: Download zip file
           run: |
@@ -59,4 +59,4 @@ jobs:
               username: ${{ secrets.FTP_USERNAME }}
               password: ${{ secrets.FTP_PASSWORD }}
               local-dir: ./upload_dir
-              server-dir: ./books/chroma_db/
+              server-dir: /books/chroma_db/
