@@ -42,7 +42,7 @@ jobs:
         - name: Prepare files for FTP upload
           run: |
               mkdir -p upload_dir
-              cp -r ./chroma-db ./upload_dir/
+              # cp -r ./chroma-db ./upload_dir/
               cp -r chroma-db.zip ./upload_dir/
 
         - name: FTP Upload
@@ -52,4 +52,4 @@ jobs:
               username: ${{ secrets.FTP_USERNAME }}
               password: ${{ secrets.FTP_PASSWORD }}
               local-dir: ./upload_dir/
-              server-dir: /books/chroma-db/
+              server-dir: /books/
