@@ -3,7 +3,7 @@ import chromadb
 from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 
-model = SentenceTransformer("sentence-transformers/LaBSE", device="cuda")
+model = SentenceTransformer("sentence-transformers/LaBSE")
 client = chromadb.PersistentClient(
     path="./chroma-db", settings=Settings(anonymized_telemetry=False)
 )

@@ -10,14 +10,6 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-        - name: Set up CUDA
-          run: |
-            sudo apt-get update
-            sudo apt-get install -y nvidia-cuda-toolkit
-
-        - name: Run GPU task
-          run: nvidia-smi
-
         - name: Checkout code
           uses: actions/checkout@v3
 
