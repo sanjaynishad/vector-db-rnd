@@ -12,7 +12,7 @@ print("Filename:", args.path)
 print("Verbose:", args.verbose)
 
 book_path = args.path  # "../book-scrape-nodejs/.tmp"
-count = args.count  # "../book-scrape-nodejs/.tmp"
+count = int(args.count) if args.count else None
 
 
 def get_book_index():
@@ -46,7 +46,7 @@ def ingest_books():
 
     for i, book in enumerate(books, 1):
         try:
-            if i > count:
+            if count is not None and i > count:
                 return
             file_name = book.get("fileName")
             file_path = file_name.replace(".html", ".txt")
