@@ -1,4 +1,4 @@
-from embeddings import add_document, query_documents, client
+from embeddings import add_document
 import json
 import argparse
 
