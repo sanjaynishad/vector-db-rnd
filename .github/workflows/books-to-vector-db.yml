@@ -1,0 +1,62 @@
+name: Books to Vector DB
+
+on:
+    push:
+        branches:
+            - initial #main
+
+jobs:
+    process-and-upload:
+        runs-on: ubuntu-22.04-gpu
+
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+
+        - name: Test FTP Connection
+          uses: SamKirkland/FTP-Deploy-Action@4.1.0
+          with:
+              server: ${{ secrets.FTP_SERVER }}
+              username: ${{ secrets.FTP_USERNAME }}
+              password: ${{ secrets.FTP_PASSWORD }}
+              local-dir: ./README.md
+              server-dir: ./books
+
+        - name: Download zip file
+          run: |
+              curl -L -o books.zip ${{ secrets.BOOKS_URL }}
+
+        - name: Extract zip file
+          run: |
+              mkdir -p books
+              unzip books.zip -d books
+
+        - name: Set up Python
+          uses: actions/setup-python@v4
+          with:
+              python-version: '3.9'
+
+        - name: Install dependencies
+          run: |
+              python -m pip install --upgrade pip
+              pip install -r requirements.txt
+              python ingest-books.py ../books 5
+
+        - name: Zip ingested files
+          run: |
+              zip -r chroma_db.zip chroma_db
+        
+        - name: Prepare files for FTP upload
+          run: |
+              mkdir -p upload_dir
+              cp -r ./chroma_db ./upload_dir/
+              cp -r chroma_db.zip ./upload_dir/
+
+        - name: FTP Upload
+          uses: SamKirkland/FTP-Deploy-Action@4.1.0
+          with:
+              server: ${{ secrets.FTP_SERVER }}
+              username: ${{ secrets.FTP_USERNAME }}
+              password: ${{ secrets.FTP_PASSWORD }}
+              local-dir: ./upload_dir
+              server-dir: ./books/chroma_db
