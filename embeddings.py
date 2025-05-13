@@ -5,7 +5,7 @@ from sentence_transformers import SentenceTransformer
 
 model = SentenceTransformer("sentence-transformers/LaBSE", device="cuda")
 client = chromadb.PersistentClient(
-    path="./../chroma-db", settings=Settings(anonymized_telemetry=False)
+    path="./chroma-db", settings=Settings(anonymized_telemetry=False)
 )
 client.heartbeat()
 collection = client.get_or_create_collection(name="hebrew_books")
