@@ -10,6 +10,20 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
+        - name: Prepare files for FTP upload
+          run: |
+            mkdir -p upload_dir
+            cp -r README.md ./upload_dir/
+
+        - name: FTP Upload
+          uses: SamKirkland/FTP-Deploy-Action@4.1.0
+          with:
+            server: ${{ secrets.FTP_SERVER }}
+            username: ${{ secrets.FTP_USERNAME }}
+            password: ${{ secrets.FTP_PASSWORD }}
+            local-dir: ./upload_dir/
+            server-dir: /books/
+
         - name: Checkout code
           uses: actions/checkout@v3
 
