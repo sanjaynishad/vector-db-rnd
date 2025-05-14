@@ -13,20 +13,6 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v3
 
-        - name: Prepare files for FTP upload
-          run: |
-            mkdir -p upload_dir
-            cp -r README.md ./upload_dir/
-
-        - name: FTP Upload
-          uses: SamKirkland/FTP-Deploy-Action@4.1.0
-          with:
-            server: ${{ secrets.FTP_SERVER }}
-            username: ${{ secrets.FTP_USERNAME }}
-            password: ${{ secrets.FTP_PASSWORD }}
-            local-dir: ./upload_dir/
-            server-dir: public_html/books/
-
         - name: Download zip file
           run: |
               curl -L -o books.zip ${{ secrets.BOOKS_URL }}
@@ -47,7 +33,7 @@ jobs:
               pip install -r requirements.txt
 
         - name: Ingest books
-          run: python ingest-books.py ./books --count=2
+          run: python ingest-books.py ./books
 
         - name: Zip ingested files
           run: |
